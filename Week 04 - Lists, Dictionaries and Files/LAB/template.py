@@ -2,8 +2,8 @@
 RECORD CHECK  -  my version
 ===========================
 
-Name  :
-Lane  :  AI / Cyber / IT      (delete two)
+Name  :  Caelib Kisa-Dhadwal
+Lane  :  IT   
 Date  :
 
 Run it:   python template.py
@@ -21,19 +21,62 @@ Delete these instructions as you replace them with your code.
 
 # your function(s) go here
 
+def check_record(value, limit):
+    """Calculate the difference, completion percentage, and limit status of a record."""
+    difference = value - limit 
+    percent = (value / limit) * 100 if limit > 0 else 0
+
+    if value > limit:
+        status = "OVER LIMIT"
+    else:
+        status = "OK"
+
+    return difference, percent, status 
+
+def print_report(label, value, limit, difference, percent, status):
+    """Format and print the record analysis directly to the terminal."""
+    print(f"Hostname: {label}")
+    print(f"Storage Used: {value} GB / Total: {limit} GB")
+    print(f"Difference: {difference} GB ({percent:.1f}%)")
+    print(f"Status: {status}")
+    print("-" * 30)
+
+def load_records(path):
+    """Load IT records from a file, returning a list of structured dictionaries."""
+    loaded_list = []
+    with open(path, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split(',')
+            if len(parts) == 3:
+                record = {
+                    "label": parts[0],
+                    "value": int(parts[1]),
+                    "limit": int(parts[2])    
+                }
+                loaded_list.append(record)
+    return loaded_list
+
+def save_results(path, results):
+    """Write the final label and status reports out to a new text file."""
+    with open(path, 'w') as file:
+        for label, status in results:
+            file.write(f"{label},{status}\n")
+
 
 # ====================================================================== STORE
 # 2. Get your records into a list of dicts, each shaped like:
 #        {"label": ..., "value": ..., "limit": ...}
 #
-#    Threshold : write the list directly in the code - at least 3 records.
-#    Typical   : instead, write a function load_records(path) that reads
-#                label,value,limit lines from a file and returns the list.
-#                Make your own data file, one record per line.
-#    Excellent : also write the results out to a new file (one line per
-#                record: label, status), as well as printing them.
-
-records = []   # replace with your code
+try:
+    records = load_records("it_data.txt")
+except FileNotFoundError:
+    print("Error: The data file 'it_data.txt' was not found.")
+    print("Starting program with an empty records list.")
+    records = []
+ 
 
 
 # =============================================================== PROCESS + OUTPUT
@@ -43,6 +86,23 @@ records = []   # replace with your code
 #                print that once, after the loop ends.
 
 # your loop goes here
+
+over_limit_count = 0
+output_results = []
+
+for rec in records:
+    diff, pct, stat = check_record(rec["value"], rec["limit"])
+    
+    print_report(rec["label"], rec["value"], rec["limit"], diff, pct, stat)
+    
+    if stat == "OVER LIMIT":
+        over_limit_count += 1
+ 
+    output_results.append((rec["label"], stat))
+ 
+if records:
+    save_results("it_results.txt", output_results)
+    print(f"Total systems OVER LIMIT: {over_limit_count}")
 
 
 # ==========================================================================
