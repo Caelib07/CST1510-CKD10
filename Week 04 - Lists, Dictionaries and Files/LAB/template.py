@@ -19,27 +19,25 @@ Delete these instructions as you replace them with your code.
 #    nothing outside it should contain a print() of its own. Give each a
 #    one-line docstring.
 
-# your function(s) go here
+# Giving each a one-line docstring.
 
-def check_record(value, limit):
-    """Calculate the difference, completion percentage, and limit status of a record."""
-    difference = value - limit 
+def check_record(value,limit):
+    """Calculate the difference, the completion percentage, and the limit status of a record."""
+    difference = value - limit
     percent = (value / limit) * 100 if limit > 0 else 0
 
     if value > limit:
         status = "OVER LIMIT"
     else:
         status = "OK"
-
-    return difference, percent, status 
+    return difference, percent, status
 
 def print_report(label, value, limit, difference, percent, status):
     """Format and print the record analysis directly to the terminal."""
     print(f"Hostname: {label}")
     print(f"Storage Used: {value} GB / Total: {limit} GB")
-    print(f"Difference: {difference} GB ({percent:.1f}%)")
+    print(f"Difference: {difference} GB ({percent:.1f}%")
     print(f"Status: {status}")
-    print("-" * 30)
 
 def load_records(path):
     """Load IT records from a file, returning a list of structured dictionaries."""
@@ -49,34 +47,26 @@ def load_records(path):
             line = line.strip()
             if not line:
                 continue
+
             parts = line.split(',')
             if len(parts) == 3:
                 record = {
                     "label": parts[0],
                     "value": int(parts[1]),
-                    "limit": int(parts[2])    
+                    "limit": int(parts[2])
                 }
                 loaded_list.append(record)
+                
     return loaded_list
 
-def save_results(path, results):
-    """Write the final label and status reports out to a new text file."""
-    with open(path, 'w') as file:
-        for label, status in results:
-            file.write(f"{label},{status}\n")
+import os
 
+# This automatically finds the exact folder where template.py is sitting
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(script_dir, "records_sample.txt")
 
-# ====================================================================== STORE
-# 2. Get your records into a list of dicts, each shaped like:
-#        {"label": ..., "value": ..., "limit": ...}
-#
-try:
-    records = load_records("it_data.txt")
-except FileNotFoundError:
-    print("Error: The data file 'it_data.txt' was not found.")
-    print("Starting program with an empty records list.")
-    records = []
- 
+records = load_records(file_path)
+
 
 
 # =============================================================== PROCESS + OUTPUT
@@ -87,22 +77,12 @@ except FileNotFoundError:
 
 # your loop goes here
 
-over_limit_count = 0
-output_results = []
-
 for rec in records:
+    # 1. Run the calculations
     diff, pct, stat = check_record(rec["value"], rec["limit"])
     
+    # 2. Print out the formatted report block
     print_report(rec["label"], rec["value"], rec["limit"], diff, pct, stat)
-    
-    if stat == "OVER LIMIT":
-        over_limit_count += 1
- 
-    output_results.append((rec["label"], stat))
- 
-if records:
-    save_results("it_results.txt", output_results)
-    print(f"Total systems OVER LIMIT: {over_limit_count}")
 
 
 # ==========================================================================

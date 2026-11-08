@@ -23,36 +23,22 @@ gb_total = float(input("Enter GB total: "))
 # ================================================================== PROCESS
 # 2. Work out what you were NOT given.       [Typical and above]
 
-
-#Remaining storage space calculation
 gb_free = gb_total - gb_used
-
-#Total space used as a percentage
 percentage_used = (gb_used / gb_total) * 100
-
-#Calcualtes the over-provisioning multiplier to tell you how many times it is larger then the toatal
-capacity_multiplier = gb_total / gb_used
-
 
 # =================================================================== OUTPUT
 # 3. Print the report.
 
+
 print()
 print("-" * 34)
-print(f"  RECORD CHECK  -  {hostname}")
+print(f" RECORD CHECK  -  {hostname}")
 print("-" * 34)
-
-print(f"Used         : {gb_used:>10.2f}")
-print(f"Total        : {gb_total:>10.2f}")
-# The '+' flag satisfies the signed difference requirement
-print(f"Free       : {gb_free:>+10.2f}")
-print(f"Percent    : {percentage_used:>10.2f} %")
-
-
-
-print(f"Multiplier : {capacity_multiplier:>10.2f}x")
+print(f"Used        : {gb_used:>10.2f}")
+print(f"Total       : {gb_total:>10.2f}")
+print(f"Free        : {gb_free:>10.2f}")
+print(f"Percent     : {percentage_used:>9.2f} %")
 print("-" * 34)
-
 
 # ==========================================================================
 # 4. Before you finish:

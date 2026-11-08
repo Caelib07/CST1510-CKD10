@@ -13,15 +13,9 @@ Delete these instructions as you replace them with your code.
 """
 
 # ==================================================================== INPUT
-over_limit_count = 0
-while True:
-
-    label = input("\nEnter hostname (or 'quit' to stop):")
-
-    if label.lower() == "quit":
-        break
-    value = float(input("Enter GB used: "))
-    limit = float(input("Enter GB total: "))
+label = input("Enter hostname: ")
+value = float(input("Enter GB used: "))
+limit = float(input("Enter GB total: "))
 
 
 
@@ -31,12 +25,10 @@ percent = (value / limit) * 100
 
 if percent >= 100:
     status = "OVER LIMIT"
-    over_limit_count += 1
 elif percent >= 90:
     status = "WARNING"
 else:
     status = "OK"
-
 
 # =================================================================== OUTPUT
 # 4. Print the report.
@@ -45,16 +37,13 @@ else:
 
 print()
 print("-" * 34)
-print(f"  RECORD CHECK  -  {label}")
-print("=" * 34)
-
-# your report lines go here
-print(f"Used         :   {value:>9.2f}")
-print(f"Total        :   {limit:>9.2f}")
-print(f"Free         :   {difference:>9.2f}")
-print(f"Percent      :   {percent:>8.2f} %")
-print(f"Status       :   {status:>9}")
-
+print(f" RECORD CHECK  -  {label}")
+print("-" * 34)
+print(f"Used        : {value:>9.2f}")
+print(f"Total       : {limit:>9.2f}")
+print(f"Free        : {difference:>9.2f}")
+print(f"Percent     : {percent:>8.2f} %")
+print(f"Status      : {status:>9}")
 print("-" * 34)
 
 

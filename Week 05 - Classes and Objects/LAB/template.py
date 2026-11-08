@@ -2,8 +2,8 @@
 RECORD CHECK  -  my version
 ===========================
 
-Name  :
-Lane  :  AI / Cyber / IT      (delete two)
+Name  :  Caelib Kisa-Dhadwal
+Lane  :  IT      
 Date  :
 
 Run it:   python template.py
@@ -25,6 +25,24 @@ Delete these instructions as you replace them with your code.
 
 # your class goes here
 
+class Record:
+    def __init__(self, hostname, gb_used, gb_total):
+        #setting attributes 
+        self.hostname = hostname
+        self.gb_used = gb_used
+        self.gb_total = gb_total
+
+    def status(self):
+        """Return the usage status based on the percentage of GB used."""
+        percentage = (self.gb_used / self.gb_total) * 100
+
+        if percentage >= 100:
+            return "OVER LIMIT"
+        elif percentage >= 90:
+            return "WARNING"
+        else:
+            return "OK"
+
 
 # ==================================================================== RECORDS
 # 2. Create your records.
@@ -35,7 +53,12 @@ Delete these instructions as you replace them with your code.
 #                lines from a file and returns a list of Record objects. Make
 #                your own data file, one record per line.
 
-records = []   # replace with your code
+# your records go here
+r1 = Record("srv-01", 87, 120)
+r2 = Record("srv-02", 115, 120)
+r3 = Record("srv-03", 130, 120)
+
+all_records = [r1, r2, r3]
 
 
 # ==================================================================== OUTPUT
@@ -48,22 +71,27 @@ records = []   # replace with your code
 #                (Simplest: a plain variable outside the loop, same pattern
 #                as Week 4. If you want it to live ON the object instead,
 #                that is a stretch worth trying - but a variable is enough.)
-
-for record in records:
+for record in all_records:
+    current_status = record.status()
+    
     print()
     print("=" * 34)
-    print(f"  RECORD CHECK  -  {record.label}")
+    print(f" RECORD CHECK - {record.hostname}")
     print("=" * 34)
-
-    # your report lines go here
-
+    
+    print(f"| Storage Used:  {record.gb_used:>4} GB         |")
+    print(f"| Storage Limit: {record.gb_total:>4} GB         |")
+    print(f"| Status:        {current_status:<14} |")
+    
     print("=" * 34)
+   
+ 
 
 
 # ==========================================================================
 # 4. Before you finish:
 #
-#    [ ] Run it and check every record's numbers by hand
-#    [ ] Check every method only reads/changes its OWN object (self) -
+#    [ Y ] Run it and check every record's numbers by hand
+#    [ Y ] Check every method only reads/changes its OWN object (self) -
 #        nothing reaches outside itself
-#    [ ] Check every method and __init__ has a one-line docstring
+#    [ Y ] Check every method and __init__ has a one-line docstring
