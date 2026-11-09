@@ -8,4 +8,4 @@ class Record:
         self.limit = limit
 
 r = Record("R-001", 87.0, 100.0)
-print(r.value)
+print(r.amount)
